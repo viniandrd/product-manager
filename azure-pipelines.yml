@@ -1,0 +1,53 @@
+# Relatório semanal do time, gerado pelo agente pm-rotina (só leitura)
+trigger: none
+pr: none
+
+schedules:
+- cron: '0 11 * * Mon'   # 08:00 em Brasília (UTC-3); o cron é sempre em UTC
+  displayName: Relatorio semanal
+  branches:
+    include:
+    - main
+  always: true            # roda mesmo numa semana sem commits
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  TIME: BackShared
+  PROJETO: BR_EQUITIES_DERIVATIVES
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22.x'
+  displayName: Usar Node.js 22
+
+- script: npm install -g @github/copilot
+  displayName: Instalar o Copilot CLI
+
+- script: |
+    set -euo pipefail
+    export COPILOT_HOME="$(Build.SourcesDirectory)/copilot-home"
+    export PERSONAL_ACCESS_TOKEN="$(printf 'pm:%s' "$ADO_PAT" | base64 -w0)"
+    copilot --agent pm-rotina -s --no-ask-user \
+      --allow-tool='ado(core_list_project_teams), ado(work), ado(wit_work_item), ado(wit_query)' \
+      --deny-tool='ado(wit_work_item_write), ado(wit_work_item_comment_write), ado(wit_backlog)' \
+      -p "Gere o relatório de status da semana do time $(TIME), no projeto $(PROJETO), nas duas versões." \
+      > relatorio.md
+    test -s relatorio.md
+  displayName: Gerar o relatório
+  env:
+    COPILOT_GITHUB_TOKEN: $(COPILOT_GITHUB_TOKEN)
+    ADO_PAT: $(ADO_PAT)
+    COPILOT_AUTO_UPDATE: 'false'
+
+- script: python3 scripts/enviar-teams.py relatorio.md
+  displayName: Enviar para o Teams
+  env:
+    TEAMS_WEBHOOK_URL: $(TEAMS_WEBHOOK_URL)
+
+- publish: relatorio.md
+  artifact: relatorio
+  displayName: Guardar o relatório
+  condition: succeededOrFailed()
