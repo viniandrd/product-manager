@@ -124,6 +124,9 @@ Padrões
 
 Recomendações
 - ...
+
+Sugestões (Scrum)
+- ...
 ```
 
 - Nas 10 maiores diferenças, ordene pela diferença em horas, não pela razão, e misture subestimadas e superestimadas. Marque estimativas reconstruídas com "(r)".
@@ -137,4 +140,5 @@ Recomendações
   - "Trabalho descoberto é 55% do estouro dos PBIs → reforçar critérios de aceite e dúvidas em aberto no refinamento."
   - "Em Development, tasks com IA intensa terminam com 70% do estimado → estimar já contando com a IA quando ela for usada."
   - "Razão mediana estável em 1,3 → considerar esse fator ao comparar horas com a capacidade no planejamento."
+- Sugestões (Scrum): carregue a skill praticas-scrum. Aqui elas viram temas para a Retrospectiva e para o refinamento. Não repita as recomendações: cite a prática do Scrum que sustenta a mudança.
 - Datas em dd/mm/aaaa.

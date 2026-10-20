@@ -135,9 +135,13 @@ Marcação das tasks (depende da causa)
 
 Tags na cadeia (da skill atualizar-cadeia)
 - PBI #126 e Feature #100: + bloqueado, por causa da task #125, com comentário.
+
+Sugestões (Scrum)
+- ...
 ```
 
 - Mostre só as linhas que mudam. Tasks sem mudança aparecem só nos alertas, se tiverem algum sinal.
+- Sugestões (Scrum): carregue a skill praticas-scrum e acrescente a seção dela antes do "Aplico?". Elas não entram no "sim" da daily.
 - Peça as causas e o uso de IA junto com o "Aplico?". Termine com: "Aplico? Se quiser, responda junto as causas e o uso de IA (ex.: 'sim; #127 complexidade; #132 IA acelerou, intenso; #133 parcial'). Itens fora da área do time só entram se você citar o ID (ex.: 'sim, inclusive #90')."
 - Causa sem resposta: as horas e o estado são gravados com o "sim", e a marcação daquela task fica para a próxima daily. Uso de IA sem resposta: a task fica sem tag e volta na pergunta da daily seguinte.
 

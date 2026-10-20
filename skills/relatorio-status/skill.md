@@ -20,7 +20,7 @@ Por dev, em listas curtas com IDs:
 - Concluído na semana
 - Em andamento
 - Bloqueado ou possível bloqueio, com o motivo se estiver escrito no item
-No fim: itens sem responsável e itens que entraram na sprint depois do início.
+No fim: itens sem responsável e itens que entraram na sprint depois do início. Depois, as sugestões da skill praticas-scrum. A versão para gestores não leva sugestões.
 
 ## 3. Versão para gestores
 No máximo 8 linhas, sem IDs no texto:

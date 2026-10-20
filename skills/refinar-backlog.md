@@ -100,6 +100,9 @@ Separe por quem resolve, começando pelos itens mais perto do topo do backlog, q
 - Para quem lidera: duplicados, itens parados, itens sem pai, prazos e conflitos de ordem.
 - Para outras pessoas: dúvidas que dependem de quem abriu o item ou de outro time, com o nome de quem abriu (Created By).
 
+### Sugestões (Scrum)
+Carregue a skill praticas-scrum e feche o relatório com a seção dela, depois da pauta. No modo de um item (seção 1), só as críticas, depois das 5 linhas.
+
 ### Exemplo
 Ilustrativo: mostra o formato, não dados reais.
 

@@ -96,11 +96,15 @@ Capacidade por dev (se houver tasks)
 
 Riscos
 - ...
+
+Sugestões (Scrum)
+- ...
 ```
 
 - Riscos a apontar, quando houver: previsão incerta, item que sobra pela segunda vez, dependência dentro da sprint, item no limite do tamanho, quebra acima do Effort, dev acima de 100%, bug com Severity 1 ou 2 pronto que ficou de fora, item com Target Date até o fim da sprint seguinte que ficou de fora.
 - Distribuição entre os devs: só se pedirem. Para cada item, sugira um dev com o motivo: horas livres na sprint e itens parecidos ou da mesma Feature que já fez. Ninguém passa de 100% das horas disponíveis. Se um dev ficar com todos os itens de uma Feature, aponte isso nos riscos.
 - Avise na proposta que o Effort dos itens fica congelado a partir da entrada na sprint (regra do time). Se o time quiser re-estimar algum item, isso precisa acontecer antes do "sim".
+- Sugestões (Scrum): carregue a skill praticas-scrum e acrescente a seção dela depois dos riscos. Elas não entram no "sim" da sprint.
 - Termine com "Aplico esta sprint?".
 
 ## 6. Aplicar
