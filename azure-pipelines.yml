@@ -42,7 +42,7 @@ steps:
     ADO_PAT: $(ADO_PAT)
     COPILOT_AUTO_UPDATE: 'false'
 
-- script: python3 scripts/enviar-teams.py relatorio.md
+- script: python3 notificacao-teams.py relatorio.md
   displayName: Enviar para o Teams
   env:
     TEAMS_WEBHOOK_URL: $(TEAMS_WEBHOOK_URL)
