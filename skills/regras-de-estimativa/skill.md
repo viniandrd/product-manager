@@ -1,6 +1,6 @@
 ---
 name: regras-de-estimativa
-description: Referência única das regras de estimativa do time. Define as unidades (1 dia = 10h), qual campo é a estimativa de cada tipo, o Effort congelado, a projeção, os limites de estouro e de superestimativa, os sinais, as tasks do planejamento, as origens da diferença de PBI e Feature e as causas. Não faz nada sozinha: as skills atualizar-horas, atualizar-cadeia, analisar-estimativas e planejar-sprint carregam esta skill para usar as mesmas definições. Use também quando perguntarem como o agente calcula estouro, atraso ou precisão.
+description: Referência única das regras de estimativa do time. Define as unidades (1 dia = 10h), qual campo é a estimativa de cada tipo, o Effort congelado, a projeção, os limites de estouro e de superestimativa, os sinais, as tasks do planejamento, as origens da diferença de PBI e Feature, as causas e o registro de uso de IA. Não faz nada sozinha: as skills atualizar-horas, atualizar-cadeia, analisar-estimativas e planejar-sprint carregam esta skill para usar as mesmas definições. Use também quando perguntarem como o agente calcula estouro, atraso ou precisão.
 ---
 
 # Regras de estimativa
@@ -92,11 +92,31 @@ O que cada origem indica:
 | Diferença entre a Feature e os PBIs iniciais | A quebra da Feature em PBIs não fechava com o Effort dela | Estimar a Feature depois de pensar nos PBIs |
 
 ## 8. Causas
-Causas de estouro ou atraso de task, cada uma com a sua tag:
-- escopo (`causa-escopo`): a task cresceu ou mudou depois de estimada.
-- complexidade (`causa-complexidade`): era mais difícil do que parecia. É o erro de estimativa propriamente dito.
-- bloqueio (`causa-bloqueio`): ficou esperando alguém ou alguma coisa.
-- interrupção (`causa-interrupcao`): o dev foi puxado para suporte, incidente ou outra demanda.
-- não sei ainda: não marca nada e pergunta de novo depois.
+A mesma tag de causa vale para os dois sentidos. O sentido vem da tag de estimativa que está junto (`estimativa-subestimada` ou `estimativa-superestimada`).
 
-Atraso sem estouro de horas quase sempre é bloqueio, interrupção, trabalho em paralelo ou board desatualizado, e não erro de estimativa. Por isso a causa é perguntada, não deduzida.
+| Causa | Tag | Subestimada: gastou mais | Superestimada: gastou menos |
+|---|---|---|---|
+| Escopo | `causa-escopo` | A task cresceu ou mudou depois de estimada | O escopo diminuiu |
+| Complexidade | `causa-complexidade` | Era mais difícil do que parecia | Era mais simples do que parecia |
+| IA | `causa-ia` | Retrabalho com o que a IA gerou | A IA acelerou o trabalho |
+| Reuso | `causa-reuso` | — | Aproveitou algo pronto |
+| Bloqueio | `causa-bloqueio` | Ficou esperando alguém ou alguma coisa | — |
+| Interrupção | `causa-interrupcao` | O dev foi puxado para suporte, incidente ou outra demanda | — |
+
+- Complexidade é o erro de estimativa propriamente dito. As outras causas explicam o erro por algo que mudou ou que não estava previsto.
+- "Não sei" não marca nada. Durante o trabalho, a resposta é "não sei ainda", e a pergunta volta depois.
+- Ofereça sempre todas as causas do sentido certo, nunca uma só. Perguntar só "foi a IA?" induz a resposta e distorce a medição.
+- Atraso sem estouro de horas quase sempre é bloqueio, interrupção, trabalho em paralelo ou board desatualizado, e não erro de estimativa. Por isso a causa é perguntada, não deduzida.
+
+## 9. Uso de IA
+Toda task que vai para Done recebe uma, e só uma, destas tags:
+
+| Tag | Quando |
+|---|---|
+| `ia-intenso` | A IA fez mais da metade do trabalho da task |
+| `ia-parcial` | A IA ajudou em partes: trechos de código, dúvidas, revisão, testes |
+| `ia-nenhum` | A task não usou IA |
+
+- Task em Done sem nenhuma das três tem o uso de IA "não registrado". Ela fica fora das comparações de IA e conta na qualidade dos dados.
+- O uso de IA fica só nas tasks. PBI, Bug e Feature não recebem estas tags: nos pais, o uso aparece como a % de horas com IA.
+- Horas com IA de um pai = soma do CW das tasks abaixo dele fechadas com `ia-intenso` ou `ia-parcial` ÷ soma do CW das tasks abaixo dele fechadas com qualquer uma das três tags.

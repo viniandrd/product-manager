@@ -55,19 +55,21 @@ O pai nunca fica atrás do filho mais adiantado, e nunca volta de estado.
 PBI, Bug e Feature recebem as tags, porque a Feature é a visão de quem acompanha o time de fora. O Epic não recebe.
 
 Durante o trabalho, a cada daily:
-- Pai estourado (regras-de-estimativa, seção 5): tag `estimativa-subestimada` no pai, mais as tags `causa-*` que existirem nas tasks abaixo dele.
+- Pai estourado (regras-de-estimativa, seção 5): tag `estimativa-subestimada` no pai, mais as tags `causa-*` das tasks abaixo dele que puxam para o mesmo lado: as que têm `estimativa-subestimada` e as tasks novas de trabalho a mais (regras-de-estimativa, seção 6).
 - Projeção que voltou para dentro da faixa: proponha tirar `estimativa-subestimada` e as tags de causa que vieram das tasks.
 
 No fechamento, quando o pai vai para Done (na linha de fechamento da seção 3, ou porque quem lidera disse que foi entregue), classifique o realizado contra a estimativa pelos limites da regras-de-estimativa (seção 4):
-- Subestimado: `estimativa-subestimada`, com as tags de causa.
-- Superestimado: `estimativa-superestimada`.
+- Subestimado: `estimativa-subestimada`, com as tags de causa do mesmo lado, como acima.
+- Superestimado: `estimativa-superestimada`, com as tags `causa-*` das tasks abaixo dele que têm `estimativa-superestimada`.
 - Preciso: tire `estimativa-subestimada`, se houver.
 - Pai que foi para Done fora do agente, fora da faixa e sem tag de estimativa: proponha a marcação na daily seguinte.
 - Sem estimativa, ou com alguma task sem CW: não marque, e diga que faltou o dado.
+- As tags de uso de IA (`ia-*`) não sobem para os pais (regras-de-estimativa, seção 9).
 
 Comentário, só quando a tag entra, sai ou no fechamento (não em toda daily). As origens são as da regras-de-estimativa (seção 7):
-- PBI ou Bug: "Estimativa do PBI: Effort <e>h, <projeção ou realizado> <r>h (<z>%). Quebra <±q>h, estimativa das tasks <±t>h, trabalho descoberto <+d>h. Causas: <tags>. Daily de dd/mm/aaaa."
-- Feature: "Estimativa da Feature: Effort <e>h (congelado em DEV), <projeção ou realizado> <r>h (<z>%). PBIs novos depois de DEV <+n>h, estouro dos PBIs <±p>h, diferença entre o Effort da Feature e os PBIs iniciais <±f>h. Causas: <tags>. Daily de dd/mm/aaaa."
+- PBI ou Bug: "Estimativa do PBI: Effort <e>h, <projeção ou realizado> <r>h (<z>%). Quebra <±q>h, estimativa das tasks <±t>h, trabalho descoberto <+d>h. Causas: <tags>. Horas com IA: <x>%. Daily de dd/mm/aaaa."
+- Feature: "Estimativa da Feature: Effort <e>h (congelado em DEV), <projeção ou realizado> <r>h (<z>%). PBIs novos depois de DEV <+n>h, estouro dos PBIs <±p>h, diferença entre o Effort da Feature e os PBIs iniciais <±f>h. Causas: <tags>. Horas com IA: <x>%. Daily de dd/mm/aaaa."
+- Horas com IA: como na regras-de-estimativa (seção 9). Sem nenhuma task fechada com registro de uso, escreva "Horas com IA: sem registro".
 
 ## 6. Bloqueio
 - PBI ou Bug com alguma task com `bloqueado`, e Feature com algum item abaixo com `bloqueado`: tag `bloqueado` no pai. Na primeira vez, comente no pai: "Bloqueio em #<ID> (<título>)."

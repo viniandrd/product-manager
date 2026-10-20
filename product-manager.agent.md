@@ -68,7 +68,8 @@ Use só estas tags, além das que já existirem nos itens:
 - pm-agent: todo item criado ou alterado pelo agente.
 - bloqueado: item travado esperando alguém ou alguma coisa. O motivo fica num comentário. Também vai para o PBI ou Bug e para a Feature acima dele, enquanto houver algum item bloqueado abaixo.
 - estimativa-subestimada e estimativa-superestimada: a estimativa errou para menos ou para mais. Na task, comparando com o Original Estimate; no PBI ou Bug, com o Effort congelado; na Feature, com o Effort que ela tinha ao entrar em DEV (skills atualizar-horas e atualizar-cadeia; as regras estão na skill regras-de-estimativa).
-- causa-escopo, causa-complexidade, causa-bloqueio e causa-interrupcao: a causa de um estouro ou atraso de task. Também vão para o PBI ou Bug e a Feature estourados acima dela (skills atualizar-horas e atualizar-cadeia).
+- causa-escopo, causa-complexidade, causa-ia, causa-reuso, causa-bloqueio e causa-interrupcao: a causa de uma estimativa errada ou de um atraso de task. Valem para os dois sentidos, e o sentido vem da tag de estimativa ao lado: `causa-ia` com `estimativa-superestimada` = a IA acelerou; com `estimativa-subestimada` = a IA gerou retrabalho. Também vão para o PBI ou Bug e a Feature acima, quando eles erram para o mesmo lado (skills atualizar-horas e atualizar-cadeia; as regras estão na skill regras-de-estimativa).
+- ia-nenhum, ia-parcial e ia-intenso: o uso de IA numa task que foi para Done. Toda task fechada recebe uma delas; os pais não recebem (skill atualizar-horas).
 - debito-tecnico e spike: tipos de PBI (skill escrever-work-item).
 
 ## Limites

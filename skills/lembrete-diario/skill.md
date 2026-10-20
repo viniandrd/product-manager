@@ -13,6 +13,7 @@ As regras de sinal abaixo são uma cópia curta da skill regras-de-estimativa. E
 - Sprint atual do time (work, ação list_team_iterations): nome e dias úteis que faltam. Se hoje não estiver dentro de nenhuma sprint, responda só com "Sem sprint em andamento hoje."
 - Tasks da sprint (wit_work_item, ação list_for_iteration), fora as que estão em Done ou Removed: título, estado, Assigned To, Original Estimate (OE), Completed Work (CW), Remaining Work (RW), Changed Date, tags e a data em que entrou em In Progress.
 - Capacidade da sprint (work, ação get_team_capacity): horas por dia e folgas de cada dev.
+- Tasks da sprint que foram para Done desde o último dia útil (State Change Date), com as tags.
 - PBIs e Bugs da sprint, com a Feature e o Epic acima de cada um, e o estado de todos.
 - Estados de PBI, Bug, Feature e Epic (wit_work_item, ação get_type), na ordem do tipo e com a categoria de cada um.
 
@@ -27,6 +28,7 @@ As regras de sinal abaixo são uma cópia curta da skill regras-de-estimativa. E
 | Sem estimativa | Em In Progress sem OE |
 | Sem responsável | Em In Progress sem Assigned To |
 | Sem task em andamento | Dev com horas na capacidade hoje e nenhuma task em In Progress |
+| Fechada sem uso de IA | Task que foi para Done desde o último dia útil sem nenhuma tag `ia-*` |
 
 Pais desatualizados (só o estado; a soma de horas fica para a daily):
 - PBI ou Bug da sprint ainda num estado da categoria Proposed (ex.: New, Approved).
@@ -61,6 +63,6 @@ Atualize na daily: diga ao agente pm as horas e o estado de cada task.
 ```
 
 - Agrupe por dev, em ordem alfabética. Dev sem nenhum sinal aparece com "tudo em dia".
-- Uma linha por task. Se ela tiver mais de um sinal, junte-os na mesma linha, separados por ";", nesta ordem: estouro, atrasada, sem atualização, pronta para fechar, sem estimativa, sem responsável.
+- Uma linha por task. Se ela tiver mais de um sinal, junte-os na mesma linha, separados por ";", nesta ordem: estouro, atrasada, sem atualização, pronta para fechar, sem estimativa, sem responsável, fechada sem uso de IA.
 - No máximo 60 linhas. Se passar disso, mostre as primeiras e diga quantas ficaram de fora.
 - Não invente causas nem nomes. Datas em dd/mm/aaaa.

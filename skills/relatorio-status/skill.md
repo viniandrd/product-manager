@@ -28,6 +28,7 @@ No máximo 8 linhas, sem IDs no texto:
 - Progresso: Effort concluído / planejado, em dias (1 dia = 10h), e a porcentagem.
 - Riscos: o que pode não ser entregue e por quê.
 - Features estouradas ou bloqueadas: título, quanto passou do Effort e as causas, pelas tags `estimativa-subestimada`, `causa-*` e `bloqueado`.
+- Features que fecharam abaixo do estimado por causa da IA (`estimativa-superestimada` com `causa-ia`), se houver.
 - Decisões ou ajuda necessárias.
 
 ## 4. Regras de texto

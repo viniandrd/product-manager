@@ -1,6 +1,6 @@
 ---
 name: atualizar-horas
-description: Atualiza as horas (Completed Work e Remaining Work) e o estado das tasks da sprint atual do time da sessão, na daily ou para um card específico, a partir do que quem lidera informar. Detecta tasks estouradas e atrasadas, pergunta a causa, marca a estimativa e registra trabalho a mais como task nova. No fim, usa a skill atualizar-cadeia para acertar os pais (PBI ou Bug, Feature e Epic). Use quando pedirem para fazer a daily, atualizar o board, as horas ou o status de uma task ou de um card, ou quando disserem algo como "trabalhei 3h na #123", "terminei a #123" ou "comecei a #124".
+description: Atualiza as horas (Completed Work e Remaining Work) e o estado das tasks da sprint atual do time da sessão, na daily ou para um card específico, a partir do que quem lidera informar. Detecta tasks estouradas, atrasadas e superestimadas, pergunta a causa, marca a estimativa, registra o uso de IA nas tasks que fecham e registra trabalho a mais como task nova. No fim, usa a skill atualizar-cadeia para acertar os pais (PBI ou Bug, Feature e Epic). Use quando pedirem para fazer a daily, atualizar o board, as horas ou o status de uma task ou de um card, ou quando disserem algo como "trabalhei 3h na #123", "terminei a #123" ou "comecei a #124".
 ---
 
 # Atualizar horas e estado
@@ -25,6 +25,7 @@ As horas são lançadas nas tasks. Esta skill cuida das tasks; os pais ficam com
 
 ## 2. Dados
 - Tasks da sprint atual (wit_work_item, ação list_for_iteration), fora as que estão em Done ou Removed. De cada task: título, estado, Assigned To, Original Estimate (OE), Completed Work (CW), Remaining Work (RW), Changed Date, tags e o PBI ou Bug pai.
+- Tasks da sprint que foram para Done desde o último dia útil (State Change Date) e ainda não têm tag de uso de IA: foram fechadas fora do agente. Elas entram na reconciliação (seção 6) e na pergunta de uso de IA (seção 4).
 - Data em que a task entrou em In Progress: o campo de data de ativação, se o tipo tiver; se não, a revisão em que o estado mudou para In Progress (list_revisions).
 - Capacidade da sprint (work, ação get_team_capacity): horas por dia e folgas de cada dev.
 
@@ -42,7 +43,9 @@ Depois peça: "Diga o andamento de cada dev. Pode ser em texto livre."
 | "#123 3h, faltam 2h" | CW = CW atual + 3; RW = 2 |
 | "#123 3h" (sem dizer quanto falta) | CW = CW atual + 3; RW = RW atual − 3, nunca abaixo de 0, marcado como "calculado" na proposta |
 | "#123 faltam 5h" | RW = 5; CW não muda |
-| "#123 terminei" | Estado Done e RW = 0. Se não disserem as horas de hoje, pergunte quantas foram |
+| "#123 terminei" | Estado Done e RW = 0. Se não disserem as horas de hoje, pergunte quantas foram. O uso de IA é perguntado junto com as causas (seção 4) |
+| "#124 terminei, a IA fez boa parte" | Done e RW = 0, tag `ia-intenso` |
+| "#124 terminei, a IA ajudou" / "#124 terminei, sem IA" | Done e RW = 0, tag `ia-parcial` / `ia-nenhum` |
 | "#124 comecei" | Estado In Progress |
 | "#125 travada", "#125 esperando o time X" | Tag `bloqueado`; o motivo vai num comentário |
 | "#125 destravou" | Tirar a tag `bloqueado` |
@@ -70,6 +73,7 @@ Depois peça: "Diga o andamento de cada dev. Pode ser em texto livre."
   - pergunte se é escopo novo ou algo que faltou na quebra (complexidade), e grave a tag da causa na task nova;
   - comentário na task nova: "Trabalho a mais no #<PBI>, registrado na daily de dd/mm/aaaa."
 - Se o trabalho a mais for uma entrega nova, e não parte do que o PBI já prometia, sugira um PBI novo com a skill escrever-work-item, em vez de uma task.
+- Uso de IA: toda task que vai para Done recebe uma tag de uso de IA (regras-de-estimativa, seção 9). Se não disserem, faça uma pergunta só para todas as tasks fechadas, junto com as causas: "Uso de IA em #124 e #132: nenhum, parcial ou intenso?". Inclua as tasks fechadas fora do agente (seção 2). Se quem lidera não souber, deixe sem tag: a task conta como não registrada.
 
 ## 5. Sinais das tasks
 Para cada task em In Progress e para as que vão para Done nesta daily, calcule os sinais de task da regras-de-estimativa (seção 5):
@@ -82,18 +86,18 @@ Para cada task em In Progress e para as que vão para Done nesta daily, calcule 
 | Sem atualização | Só avisar |
 
 - Pergunte a causa uma vez por task, não em toda daily. Se a task já tem uma tag de causa, só mostre o sinal.
-- Ofereça as causas da regras-de-estimativa (seção 8): escopo, complexidade, bloqueio, interrupção ou não sei ainda.
+- Ofereça todas as causas de subestimada da regras-de-estimativa (seção 8): escopo, complexidade, IA (retrabalho), bloqueio, interrupção ou não sei ainda.
 - Se a causa for complexidade ou escopo, pergunte também se o RW precisa subir.
 
 ## 6. Marcação das tasks
 - Estouro com causa confirmada: tag `estimativa-subestimada` e a tag da causa.
 - Atraso sem estouro, com causa confirmada: só a tag da causa. Se a causa for complexidade, também `estimativa-subestimada`.
-- Ao ir para Done, classifique a task pelo realizado (CW ÷ OE) com os limites da regras-de-estimativa (seção 4):
+- Ao ir para Done, inclusive fora do agente (seção 2), classifique a task pelo realizado (CW ÷ OE) com os limites da regras-de-estimativa (seção 4):
   - Subestimada e sem a tag: `estimativa-subestimada`. Pergunte a causa, se ainda não houver.
-  - Superestimada: `estimativa-superestimada`.
+  - Superestimada: `estimativa-superestimada`. Pergunte a causa, oferecendo todas as de superestimada (regras-de-estimativa, seção 8): IA acelerou, aproveitou algo pronto, era mais simples, escopo diminuiu ou não sei.
   - Precisa, com a tag `estimativa-subestimada`: proponha tirar essa tag. A tag da causa fica.
   - Task sem OE ou sem CW: não marque, e diga que faltou o dado.
-- Toda marcação leva um comentário: "Estimativa: OE <x>h, projeção <y>h (<z>%). Causa: <causa>. Daily de dd/mm/aaaa." Na reconciliação, escreva "realizado" no lugar de "projeção".
+- Toda marcação leva um comentário: "Estimativa: OE <x>h, projeção <y>h (<z>%). Causa: <causa>. Daily de dd/mm/aaaa." Na reconciliação, escreva "realizado" no lugar de "projeção" e acrescente "Uso de IA: <nenhum, parcial ou intenso>."
 
 ## 7. Proposta
 Uma proposta só para a daily inteira, com as tasks e o que a skill atualizar-cadeia devolveu. Exemplo ilustrativo:
@@ -101,11 +105,12 @@ Uma proposta só para a daily inteira, com as tasks e o que a skill atualizar-ca
 ```
 Daily do time <TIME> · dd/mm/aaaa · sprint <nome>
 
-| Dev   | ID   | Título                  | Estado              | CW      | RW                 | OE | Projeção/OE | Sinal   |
-|-------|------|-------------------------|---------------------|---------|--------------------|----|-------------|---------|
-| Ana   | #123 | Criar endpoint de reset | In Progress         | 5 → 8   | 4 → 2              | 10 | 100%        | —       |
-| Ana   | #130 | Testar o reset          | To Do → In Progress | 0 → 2   | 10 → 8 (calculado) | 10 | 100%        | —       |
-| Bruno | #127 | Migrar tabela de ordens | In Progress         | 18 → 24 | 2 → 10             | 20 | 170%        | estouro |
+| Dev   | ID   | Título                  | Estado              | CW      | RW                 | OE | Projeção/OE | Sinal         |
+|-------|------|-------------------------|---------------------|---------|--------------------|----|-------------|---------------|
+| Ana   | #123 | Criar endpoint de reset | In Progress         | 5 → 8   | 4 → 2              | 10 | 100%        | —             |
+| Ana   | #130 | Testar o reset          | To Do → In Progress | 0 → 2   | 10 → 8 (calculado) | 10 | 100%        | —             |
+| Bruno | #127 | Migrar tabela de ordens | In Progress         | 18 → 24 | 2 → 10             | 20 | 170%        | estouro       |
+| Carla | #132 | Ajustar log de acesso   | In Progress → Done  | 2 → 4   | 3 → 0              | 10 | 40%         | superestimada |
 
 Cadeia (da skill atualizar-cadeia)
 | Tipo    | ID   | Título            | Estado               | CW        | RW        | Effort | Projeção/Effort | Motivo                                     |
@@ -119,18 +124,22 @@ Alertas
 - #131 atrasada: deveria ter terminado em dd/mm/aaaa. Qual a causa?
 - Sem atualização: #129 (Carla).
 - Risco na sprint: Bruno tem 10h de RW e 6h disponíveis até o fim da sprint.
+- #132 terminou com 4h de 10h estimadas (40%). Qual a causa? (IA acelerou, aproveitou algo pronto, era mais simples, escopo diminuiu, não sei)
+- Uso de IA nas tasks fechadas: #132, e #133, que foi para Done ontem direto no board. Nenhum, parcial ou intenso?
 - (alertas da cadeia, ex.: PBI estourado com a origem da diferença, Effort alterado, pai à frente do filho)
 
 Marcação das tasks (depende da causa)
 - #127 → estimativa-subestimada + causa-<resposta>, com comentário.
+- #132 → estimativa-superestimada + causa-<resposta> + ia-<resposta>, com comentário.
+- #133 → ia-<resposta>.
 
 Tags na cadeia (da skill atualizar-cadeia)
 - PBI #126 e Feature #100: + bloqueado, por causa da task #125, com comentário.
 ```
 
 - Mostre só as linhas que mudam. Tasks sem mudança aparecem só nos alertas, se tiverem algum sinal.
-- Peça as causas junto com o "Aplico?". Termine com: "Aplico? Se quiser, responda junto as causas (ex.: 'sim, #127 complexidade'). Itens fora da área do time só entram se você citar o ID (ex.: 'sim, inclusive #90')."
-- Causa sem resposta: as horas e o estado são gravados com o "sim", e a marcação daquela task fica para a próxima daily.
+- Peça as causas e o uso de IA junto com o "Aplico?". Termine com: "Aplico? Se quiser, responda junto as causas e o uso de IA (ex.: 'sim; #127 complexidade; #132 IA acelerou, intenso; #133 parcial'). Itens fora da área do time só entram se você citar o ID (ex.: 'sim, inclusive #90')."
+- Causa sem resposta: as horas e o estado são gravados com o "sim", e a marcação daquela task fica para a próxima daily. Uso de IA sem resposta: a task fica sem tag e volta na pergunta da daily seguinte.
 
 ## 8. Aplicar
 Grave nesta ordem:
