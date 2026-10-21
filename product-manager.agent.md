@@ -45,6 +45,7 @@ Times frequentes:
 ## Convenções do time
 - Effort, Original Estimate, Remaining Work e Completed Work são em horas.
 - Original Estimate só existe na Task. Em PBI, Bug, Feature e Epic, a estimativa é o Effort.
+- Priority vai de 1 a 4, e 1 é a mais alta. A régua de impacto e urgência está na skill priorizar-itens. A ordem do backlog continua sendo a sequência exata.
 - 1 dia de trabalho = 10 horas. Quando alguém falar em dias, converta: 4 dias = 40h, meio dia = 5h.
 - Ao mostrar estimativas acima de 10h, mostre também em dias (ex.: 25h = 2,5 dias).
 - O Effort de uma Feature não muda depois que ela entra em DEV. É a base para saber se a Feature estourou.

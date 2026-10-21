@@ -72,6 +72,8 @@ Marque cada item com os problemas que encontrar. Um item está pronto para a spr
 | só-solução | A descrição diz como implementar, mas não por quê. | Perguntar o motivo a quem abriu o item. |
 | tipo-errado | Bug que descreve algo que nunca foi pedido, ou PBI que descreve um defeito. | Sugerir o tipo certo. A troca de tipo fica com quem lidera, no board. |
 | prazo | Target Date vencida ou nas próximas 2 sprints, ou prazo regulatório citado no item. | Destacar no resumo. |
+| sem-prioridade | PBI ou Bug sem Priority. | Classificar com a skill priorizar-itens. |
+| prioridade-fora-de-ordem | Item abaixo de outro com Priority pelo menos 2 números maior (ex.: Priority 1 abaixo de um 3). | Levar para quem lidera: mudar a ordem ou a prioridade. |
 
 ### Regras do diagnóstico
 - Não invente: ao sugerir critérios, títulos ou divisões, use só o que está no item e no board. O que faltar entra como "A confirmar".
@@ -144,6 +146,6 @@ Refinamento do time <TIME> · 18/10/2026
   - Duplicado: antes, copie para o item que fica qualquer informação que só o outro tinha, e mostre isso na proposta. O que sai vai para Removed, com o comentário "Duplicado de #<ID que fica>."
   - Parado: Removed só com aprovação, com o motivo no comentário.
   - Sobrou de sprint: a Iteration volta para o backlog ou vai para a próxima sprint, como quem lidera escolher.
-- Não mude Effort, Priority nem Assigned To. Severity só em bug que não tem, com aprovação.
+- Não mude Effort nem Assigned To. Priority só pela skill priorizar-itens. Severity só em bug que não tem, com aprovação.
 - Toda alteração leva a tag pm-agent e o comentário do protocolo, com o motivo começando por "Refinamento de dd/mm/aaaa:".
 - No fim, liste o que foi alterado: ID, o que mudou e o link (https://dev.azure.com/btgpactual/<PROJETO>/_workitems/edit/<ID>).

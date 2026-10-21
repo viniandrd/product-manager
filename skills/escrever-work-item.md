@@ -142,7 +142,8 @@ Não divida por camada técnica (um PBI de backend, outro de banco): nenhum dele
 - Critérios de aceite, se o tipo tiver o campo: um critério com o comportamento esperado a partir dos Repro Steps e um que garanta que o que já funcionava continua funcionando.
 
 ## 5. O que deixar em branco ou só propor
-- Effort, Priority e Remaining Work: em branco. São decisões do time e de quem lidera. Não sugira número.
+- Effort e Remaining Work: em branco. São decisões do time e de quem lidera. Não sugira número.
+- Priority (PBI e Bug): proponha pela régua da skill priorizar-itens, com o impacto e a urgência em uma frase. Sem base no pedido para um dos dois, deixe em branco e pergunte junto com o "Aplico?".
 - Se quem lidera disser a estimativa, grave-a em horas, convertendo os dias: 1 dia = 10h (4 dias = Effort 40).
 - PBI ou Bug gravado direto na sprint atual ("sim, sprint atual") precisa de Effort: peça a estimativa antes de gravar, porque depois de entrar na sprint o Effort não muda.
 - Severity (Bug) e Risk (quando o tipo tiver): proponha com uma frase de justificativa. Risk só quando o pedido der base (prazo regulatório, dependência de outro time, tecnologia nova); senão, em branco.
@@ -201,7 +202,8 @@ Critérios de aceite
 1. Dado ..., quando ..., então ...
 2. ...
 
-Em branco: Effort, Priority, Assigned To.
+Priority: 2 (impacto alto: ...; urgência média: ...) ou "a confirmar: impacto? urgência?"
+Em branco: Effort, Assigned To.
 Itens parecidos: nenhum. (ou: #987, Done, citado na descrição)
 ```
 
@@ -268,5 +270,6 @@ Proposta:
 - Nada inventado: o que não veio do pedido está como "A confirmar".
 - Critérios verificáveis, com pelo menos um caso de erro.
 - Nenhuma solução técnica na descrição.
-- Effort, Priority e Assigned To em branco.
+- Priority proposta com impacto e urgência, ou perguntada.
+- Effort e Assigned To em branco.
 - Área, iteração e tag pm-agent na proposta.
